@@ -14,6 +14,7 @@
     "lines": 90
   },
   "dependencies": {
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mocha-junit-reporter": "^2.2.1",
@@ -23,7 +24,6 @@
   },
   "devDependencies": {
     "chai": "*",
-    "chai-http": "^5.1.2",
     "mocha": "*"
   }
 }
