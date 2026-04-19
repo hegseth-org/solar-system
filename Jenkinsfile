@@ -6,7 +6,7 @@ pipeline {
 	MONGO_PASSWORD = ""
     }
     stages {
-        stage('Install dependencies') {
+        stage('Instal dependencies') {
             steps {
                 sh 'npm install --no-audit'
             }
