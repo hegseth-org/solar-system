@@ -5,7 +5,6 @@ const OS = require('os');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const cors = require('cors');
-const serverless = require('serverless-http');
 
 const app = express();
 
@@ -13,7 +12,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors());
 
-// ✅ Updated Mongoose connection (modern style)
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     user: process.env.MONGO_USERNAME,
     pass: process.env.MONGO_PASSWORD
@@ -37,7 +36,7 @@ const dataSchema = new mongoose.Schema({
 
 const planetModel = mongoose.model('planets', dataSchema);
 
-// 🔥 FIXED ROUTE (no callbacks anymore)
+// Routes
 app.post('/planet', async (req, res) => {
     try {
         const planetData = await planetModel.findOne({ id: req.body.id });
@@ -58,7 +57,6 @@ app.post('/planet', async (req, res) => {
     }
 });
 
-// Routes
 app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
@@ -87,11 +85,11 @@ app.get('/ready', (req, res) => {
     res.json({ status: "ready" });
 });
 
-// Server start (kept for local run)
-app.listen(3000, () => {
-    console.log("Server successfully running on port - 3000");
-});
+// ❗ IMPORTANT FIX: start server only if NOT in test environment
+if (require.main === module) {
+    app.listen(3000, () => {
+        console.log("Server successfully running on port - 3000");
+    });
+}
 
 module.exports = app;
-
-// module.exports.handler = serverless(app);
