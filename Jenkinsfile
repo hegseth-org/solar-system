@@ -20,6 +20,7 @@ pipeline {
 	    steps {
 		sh 'npm test'
 	    }
+	    junit 'test-results.xml'
         }
     }
 }
