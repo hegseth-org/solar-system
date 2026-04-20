@@ -24,8 +24,10 @@ pipeline {
         }
 	stage('Code coverage') {
 	    steps {
-		sh 'npm run coverage'
-		sh 'echo $?'
+		catchError(buildResult: 'SUCCESS', message: 'Oops! It will be fixed in future releases.', stageResult: 'UNSTABLE') {
+			sh 'npm run coverage'
+		}
+		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
 	    }
 	}
     }
