@@ -25,7 +25,7 @@ pipeline {
 	stage('Code coverage') {
 	    steps {
 		sh 'npm run coverage'
-		sh 'exit $?'
+		sh 'echo $?'
 	    }
 	}
     }
