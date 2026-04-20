@@ -22,5 +22,10 @@ pipeline {
 		junit 'test-results.xml'
 	    }
         }
+	stage('Code coverage') {
+	    steps {
+		sh 'npm run coverage'
+	    }
+	}
     }
 }
