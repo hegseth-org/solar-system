@@ -41,12 +41,11 @@ pipeline {
 		stage('SAST - Sonarqube') {
 			steps {
 				sh '''
-					export PATH=/home/ubuntu/.nvm/versions/node/v22.6.0/bin:$PATH
 					sonar-scanner \
 					-Dsonar.projectKey=Solar-System_project \
               				-Dsonar.sources=. \
               				-Dsonar.host.url=http://13.60.92.74:9000 \
-              				-Dsonar.nodejs.executable=/home/ubuntu/.nvm/versions/node/v22.6.0/bin/node
+					-Dsonar.nodejs.executable=/usr/bin/node
 				'''
 			}
 		}
