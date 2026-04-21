@@ -4,7 +4,8 @@ pipeline {
         MONGO_URI = "mongodb://localhost:27017/mydb"
         MONGO_USERNAME = ""
         MONGO_PASSWORD = ""
-		SONAR_TOKEN = credentials('sonar-token')
+	SONAR_TOKEN = credentials('sonar-token')
+	SONAR_SCANNER_HOME = tool 'sonarqube-scanner-610'
 		
     }
     stages {
@@ -42,8 +43,9 @@ pipeline {
         }
 		stage('SAST - Sonarqube') {
 			steps {
+				sh 'echo $SONAR_SCANNER_HOME'
 				sh '''
-					sonar-scanner \
+					$SONAR_SCANNER_HOME/bin/sonar-scanner \
 					  -Dsonar.projectKey=Solar-System_project \
 					  -Dsonar.sources=. \
 					  -Dsonar.host.url=http://51.20.127.252:9000 \
