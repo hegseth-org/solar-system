@@ -4,9 +4,11 @@ pipeline {
         MONGO_URI = "mongodb://localhost:27017/mydb"
         MONGO_USERNAME = ""
         MONGO_PASSWORD = ""
+		SONAR_TOKEN = credentials('sonar-token')
+		
     }
     stages {
-        stage('Instal dependencies') {
+        stage('Install dependencies') {
             steps {
                 sh 'npm install --no-audit'
             }
@@ -38,5 +40,16 @@ pipeline {
                     }
             }
         }
+		stage('SAST - Sonarqube') {
+			steps {
+				sh '''
+					sonar-scanner \
+					  -Dsonar.projectKey=Solar-System_project \
+					  -Dsonar.sources=. \
+					  -Dsonar.host.url=http://51.20.127.252:9000 \
+					  -Dsonar.token=$SONAR_TOKEN
+				'''
+			}
+		}
     }
 }
