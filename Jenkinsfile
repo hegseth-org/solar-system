@@ -50,7 +50,7 @@ pipeline {
           					-Dsonar.sources=. \
           					-Dsonar.host.url=http://51.20.127.252:9000 \
           					-Dsonar.token=$SONAR_TOKEN \
-          					-Dsonar.nodejs.executable=/home/ubuntu/.nvm/versions/node/v22.6.0/bin/node
+						-Dsonar.nodejs.executable=/usr/bin/node
 				'''
 			}
 		}
