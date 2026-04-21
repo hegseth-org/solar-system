@@ -45,6 +45,7 @@ pipeline {
 					-Dsonar.projectKey=Solar-System_project \
               				-Dsonar.sources=. \
               				-Dsonar.host.url=http://13.60.92.74:9000 \
+					-Dsonar.token=sqp_e8153c0795fab3b5c961212efa0c2ff4ec2d720a \
 					-Dsonar.nodejs.executable=/usr/bin/node
 				'''
 			}
