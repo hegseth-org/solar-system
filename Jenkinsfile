@@ -46,10 +46,11 @@ pipeline {
 				sh 'echo $SONAR_SCANNER_HOME'
 				sh '''
 					$SONAR_SCANNER_HOME/bin/sonar-scanner \
-					  -Dsonar.projectKey=Solar-System_project \
-					  -Dsonar.sources=. \
-					  -Dsonar.host.url=http://51.20.127.252:9000 \
-					  -Dsonar.token=$SONAR_TOKEN
+          					-Dsonar.projectKey=Solar-System_project \
+          					-Dsonar.sources=. \
+          					-Dsonar.host.url=http://51.20.127.252:9000 \
+          					-Dsonar.token=$SONAR_TOKEN \
+          					-Dsonar.nodejs.executable=/home/ubuntu/.nvm/versions/node/v22.6.0/bin/node
 				'''
 			}
 		}
