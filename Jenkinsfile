@@ -46,7 +46,7 @@ pipeline {
               				-Dsonar.sources=. \
               				-Dsonar.host.url=http://16.171.43.38:9000 \
 					-Dsonar.token=sqp_a3bf9dc04ca284c6a96feff3d5c43198c84674d9 \
-					-Dsonar.nodejs.executable=/usr/bin/node
+					-Dsonar.nodejs.executable=/usr/bin/node \
 					-Dsonar.javascript.lcov.reportPaths=/var/lib/jenkins/workspace/solar-system_stage_code_coverage/coverage/lcov.info
 				'''
 			}
