@@ -3,7 +3,7 @@ pipeline {
     environment {
         MONGO_URI = "mongodb://localhost:27017/mydb"
         MONGO_USERNAME = ""
-        MONGO_PASSWORD = ""		
+        MONGO_PASSWORD = ""
     }
     stages {
         stage('Install dependencies') {
@@ -38,18 +38,25 @@ pipeline {
                     }
             }
         }
-		stage('SAST - Sonarqube') {
-			steps {
-				sh '''
-					sonar-scanner \
-					-Dsonar.projectKey=Solar-System_project \
-              				-Dsonar.sources=. \
-              				-Dsonar.host.url=http://16.171.43.38:9000 \
-					-Dsonar.token=sqp_a3bf9dc04ca284c6a96feff3d5c43198c84674d9 \
-					-Dsonar.nodejs.executable=/usr/bin/node \
-					-Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-				'''
-			}
-		}
+        stage('SAST - Sonarqube') {
+            steps {
+                    withSonarQubeEnv('sonarqube-server') { /*injects env variables such as SONAR_HOST_URL, SONAR_AUTH_TOKEN*/
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=Solar-System_project \
+                                -Dsonar.sources=. \
+                                -Dsonar.nodejs.executable=/usr/bin/node \
+                                -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                        '''
+                    }
+            }
+        }
+        stage('Quality gate') {
+            steps {
+                timeout(time:120, unit: 'SECONDS') {
+                    waitForQualityGate abortPipeline: true /*makes jenkins wait for sonarqube's pass/fail decision and then allows or blocks the pipeline*/
+                }
+            }
+        }
     }
 }
