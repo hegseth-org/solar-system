@@ -43,7 +43,7 @@ pipeline {
                     withSonarQubeEnv('sonarqube-server') { /*injects env variables such as SONAR_HOST_URL, SONAR_AUTH_TOKEN*/
                         sh '''
                             sonar-scanner \
-                                -Dsonar.projectKey=Solar-System_project \
+                                -Dsonar.projectKey=solar-system \
                                 -Dsonar.sources=. \
                                 -Dsonar.nodejs.executable=/usr/bin/node \
                                 -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
