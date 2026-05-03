@@ -53,7 +53,7 @@ pipeline {
         }
         stage('Quality gate') {
             steps {
-                timeout(time:120, unit: 'SECONDS') {
+                timeout(time:130, unit: 'SECONDS') {
                     waitForQualityGate abortPipeline: true /*makes jenkins wait for sonarqube's pass/fail decision and then allows or blocks the pipeline*/
                 }
             }
