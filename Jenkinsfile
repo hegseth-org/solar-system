@@ -64,42 +64,62 @@ pipeline {
             }
 	}
 	stage('Trivy vulnerability scanner') {
-	    steps {
-		sh '''
-			trivy image humayun27/solar-system:$GIT_COMMIT \
-				--severity LOW,MEDIUM \
-				--exit-code 0 \
-				--quiet \
-				--format json -o trivy-image-LOW-MEDIUM-results.json
-			trivy image humayun27/solar-system:$GIT_COMMIT \
-                                --severity HIGH,CRITICAL \
-                                --exit-code 0 \
-                                --quiet \
-                                --format json -o trivy-image-HIGH-CRITICAL-results.json
-		''' 
-		post {
-			always {
-				sh '''
-					trivy convert \
-						--format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-						--output trivy-image-HIGH-CRITICAL-results.xml trivy-image-HIGH-CRITICAL-results.json
-					trivy convert \
-						--format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-						--output trivy-image-LOW-MEDIUM-results.xml trivy-image-LOW-MEDIUM-results.json
-					trivy convert \
-                                                --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                                                --output trivy-image-HIGH-CRITICAL-results.html trivy-image-HIGH-CRITICAL-results.json
-                                        trivy convert \
-                                                --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                                                --output trivy-image-LOW-MEDIUM-results.html trivy-image-LOW-MEDIUM-results.json
-				'''
-				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: './', reportFiles: 'trivy-image-HIGH-CRITICAL-results.html', reportNa
-me: 'trivy-image-HIGH-CRITICAL report', reportTitles: '', useWrapperFileDirectly: true])
-				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: './', reportFiles: 'trivy-image-LOW-MEDIUM-results.html', reportNa
-me: 'trivy-image-LOW-MEDIUM report', reportTitles: '', useWrapperFileDirectly: true])
-			}
-		}
-	    }
-	}
+    steps {
+        sh '''
+            trivy image humayun27/solar-system:$GIT_COMMIT \
+                --severity LOW,MEDIUM \
+                --exit-code 0 \
+                --quiet \
+                --format json -o trivy-image-LOW-MEDIUM-results.json
+
+            trivy image humayun27/solar-system:$GIT_COMMIT \
+                --severity HIGH,CRITICAL \
+                --exit-code 0 \
+                --quiet \
+                --format json -o trivy-image-HIGH-CRITICAL-results.json
+        '''
     }
+
+    post {
+        always {
+            sh '''
+                trivy convert \
+                    --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                    --output trivy-image-HIGH-CRITICAL-results.xml trivy-image-HIGH-CRITICAL-results.json
+
+                trivy convert \
+                    --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                    --output trivy-image-LOW-MEDIUM-results.xml trivy-image-LOW-MEDIUM-results.json
+
+                trivy convert \
+                    --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                    --output trivy-image-HIGH-CRITICAL-results.html trivy-image-HIGH-CRITICAL-results.json
+
+                trivy convert \
+                    --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                    --output trivy-image-LOW-MEDIUM-results.html trivy-image-LOW-MEDIUM-results.json
+            '''
+
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                icon: '',
+                keepAll: false,
+                reportDir: './',
+                reportFiles: 'trivy-image-HIGH-CRITICAL-results.html',
+                reportName: 'trivy-image-HIGH-CRITICAL report'
+            ])
+
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                icon: '',
+                keepAll: false,
+                reportDir: './',
+                reportFiles: 'trivy-image-LOW-MEDIUM-results.html',
+                reportName: 'trivy-image-LOW-MEDIUM report'
+            ])
+        }
+    }
+}
 }
