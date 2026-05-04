@@ -58,5 +58,10 @@ pipeline {
                 }
             }
         }
+	stage('Build docker image') {
+	    steps {
+	   	sh 'docker build -t ":$GIT_COMMIT" .'
+            }
+	}
     }
 }
