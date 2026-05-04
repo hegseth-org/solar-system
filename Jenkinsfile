@@ -143,5 +143,12 @@ pipeline {
                 }
             }
         }
+        stage('Push image to docker registry'){
+			steps {
+				withDockerRegistry(credentialsId: 'docker-credentials') {
+					sh 'docker push humayun27/solar-system:$GIT_COMMIT'
+				}
+			}
+        }
     }
 }
