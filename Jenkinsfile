@@ -62,6 +62,7 @@ pipeline {
                         sonar-scanner \
                             -Dsonar.projectKey=solar-system \
                             -Dsonar.sources=. \
+			    -Dsonar.exclusions=**/node_modules/**,**/coverage/**,trivy-image-*.json,trivy-image-*.html,trivy-image-*.xml
                             -Dsonar.nodejs.executable=/usr/bin/node \
                             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                     '''
