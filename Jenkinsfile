@@ -74,7 +74,7 @@ pipeline {
 
             trivy image humayun27/solar-system:$GIT_COMMIT \
                 --severity HIGH,CRITICAL \
-                --exit-code 0 \
+                --exit-code 1 \
                 --quiet \
                 --format json -o trivy-image-HIGH-CRITICAL-results.json
         '''
@@ -121,5 +121,4 @@ pipeline {
             ])
         }
     }
-}
 }
