@@ -60,7 +60,7 @@ pipeline {
         }
 	stage('Build docker image') {
 	    steps {
-	   	sh 'docker build -t ":$GIT_COMMIT" .'
+	   	sh 'docker build -t "humayun27/solar-system:$GIT_COMMIT" .'
             }
 	}
     }
