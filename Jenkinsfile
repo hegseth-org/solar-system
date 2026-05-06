@@ -60,9 +60,9 @@ pipeline {
                 withSonarQubeEnv('sonarqube-server') {
                     sh '''
                         sonar-scanner \
-                            -Dsonar.projectKey=solary-system \
+                            -Dsonar.projectKey=solar-system \
                             -Dsonar.sources=. \
-			    -Dsonar.exclusions=**/node_modules/**,**/coverage/**,trivy-image-*.json,trivy-image-*.html,trivy-image-*.xml \
+                            -Dsonar.exclusions=**/node_modules/**,**/coverage/**,trivy-image-*.json,trivy-image-*.html,trivy-image-*.xml \
                             -Dsonar.nodejs.executable=/usr/bin/node \
                             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                     '''
@@ -143,12 +143,22 @@ pipeline {
                 }
             }
         }
-        stage('Push image to docker registry'){
-			steps {
-				withDockerRegistry(credentialsId: 'docker-credentials',url: "") {
-					sh 'docker push humayun27/solar-system:$GIT_COMMIT'
-				}
-			}
+		stage('Push image to docker registry'){
+                        steps {
+                                withDockerRegistry(credentialsId: 'docker-credentials',url: "") {
+                                        sh 'docker push humayun27/solar-system:$GIT_COMMIT'
+                                }
+                        }
         }
+		stage('Deploy - AWS EC2') {
+			steps {
+				sh '''
+					docker run -d \
+					--name solar-system \
+					-p 3000:3000 \
+					humayun27/solar-system:$GIT_COMMIT
+				'''
+			}
+		}
     }
 }
