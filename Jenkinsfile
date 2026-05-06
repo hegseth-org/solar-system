@@ -60,7 +60,7 @@ pipeline {
                 withSonarQubeEnv('sonarqube-server') {
                     sh '''
                         sonar-scanner \
-                            -Dsonar.projectKey=solar-system \
+                            -Dsonar.projectKey=solary-system \
                             -Dsonar.sources=. \
                             -Dsonar.exclusions=**/node_modules/**,**/coverage/**,trivy-image-*.json,trivy-image-*.html,trivy-image-*.xml \
                             -Dsonar.nodejs.executable=/usr/bin/node \
